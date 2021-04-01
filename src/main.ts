@@ -167,6 +167,7 @@ async function run(): Promise<void> {
       const typeLabel: string = details?.type?.name || '';
       const labels: string[] = [podLabel, hotfixLabel, typeLabel].filter(isNotBlank);
       core.setOutput('status', details);
+      console.log(details);
       console.log('Adding lables -> ', labels);
 
       if (!WILL_TRANSITION_TICKET) {
