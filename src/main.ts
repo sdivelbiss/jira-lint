@@ -69,6 +69,7 @@ async function run(): Promise<void> {
         repository,
         organization: { login: owner },
         pull_request: pullRequestEvent = {},
+        head_commit: headCommit = {},
       },
       eventName,
     } = github.context;
@@ -87,10 +88,10 @@ async function run(): Promise<void> {
         html_url: repository.html_url,
         body: '',
         base: {
-          ref: 'skip',
+          ref: `skip`,
         },
         head: {
-          ref: github.context.ref,
+          ref: `${github.context.ref}/${headCommit.message}`,
         },
         // eslint-disable-next-line @typescript-eslint/camelcase
         changed_files: 0,
