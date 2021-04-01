@@ -33,7 +33,9 @@ inputs:
       Requires validate_issue_status to be set to true.
     required: false
     default: "In Progress"
-
+outputs:
+  status:
+    description: Issue status
 runs:
   using: 'node12'
   main: 'lib/index.js'

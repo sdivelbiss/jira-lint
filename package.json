@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cleartax/jira-lint"
+    "url": "git+https://github.com/sdivelbiss/jira-lint.git"
   },
   "engines": {
     "node": ">= 13",
@@ -63,5 +63,12 @@
     "prettier": "^2.0.4",
     "ts-jest": "^25.4.0",
     "typescript": "^3.8.3"
+  },
+  "bugs": {
+    "url": "https://github.com/cleartax/jira-lint/issues"
+  },
+  "homepage": "https://github.com/cleartax/jira-lint#readme",
+  "directories": {
+    "lib": "lib"
   }
 }
