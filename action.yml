@@ -33,6 +33,11 @@ inputs:
       Requires validate_issue_status to be set to true.
     required: false
     default: "In Progress"
+  will_transition:
+    description: |
+      If set to true, no comments or linting will occur
+    required: false
+    default: false
 outputs:
   status:
     description: Issue status

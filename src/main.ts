@@ -32,6 +32,7 @@ const getInputs = (): JIRALintActionInputs => {
   const PR_THRESHOLD = parseInt(core.getInput('pr-threshold', { required: false }), 10);
   const VALIDATE_ISSUE_STATUS: boolean = core.getInput('validate_issue_status', { required: false }) === 'true';
   const ALLOWED_ISSUE_STATUSES: string = core.getInput('allowed_issue_statuses');
+  const WILL_TRANSITION_TICKET: boolean = core.getInput('will_transition') === 'true';
 
   return {
     JIRA_TOKEN,
@@ -42,6 +43,7 @@ const getInputs = (): JIRALintActionInputs => {
     JIRA_BASE_URL: JIRA_BASE_URL.endsWith('/') ? JIRA_BASE_URL.replace(/\/$/, '') : JIRA_BASE_URL,
     VALIDATE_ISSUE_STATUS,
     ALLOWED_ISSUE_STATUSES,
+    WILL_TRANSITION_TICKET,
   };
 };
 
@@ -56,6 +58,7 @@ async function run(): Promise<void> {
       PR_THRESHOLD,
       VALIDATE_ISSUE_STATUS,
       ALLOWED_ISSUE_STATUSES,
+      WILL_TRANSITION_TICKET,
     } = getInputs();
 
     const defaultAdditionsCount = 800;
@@ -120,7 +123,10 @@ async function run(): Promise<void> {
         ...commonPayload,
         body: getNoIdComment(headBranch),
       };
-      await addComment(client, comment);
+
+      if (!WILL_TRANSITION_TICKET) {
+        await addComment(client, comment);
+      }
 
       core.setFailed('JIRA issue id is missing in your branch.');
       process.exit(1);
@@ -140,10 +146,12 @@ async function run(): Promise<void> {
       core.setOutput('status', details);
       console.log('Adding lables -> ', labels);
 
-      await addLabels(client, {
-        ...commonPayload,
-        labels,
-      });
+      if (!WILL_TRANSITION_TICKET) {
+        await addLabels(client, {
+          ...commonPayload,
+          labels,
+        });
+      }
 
       if (!isIssueStatusValid(VALIDATE_ISSUE_STATUS, ALLOWED_ISSUE_STATUSES.split(','), details)) {
         const invalidIssueStatusComment: IssuesCreateCommentParams = {
@@ -157,7 +165,7 @@ async function run(): Promise<void> {
         process.exit(1);
       }
 
-      if (shouldUpdatePRDescription(prBody)) {
+      if (shouldUpdatePRDescription(prBody) && !WILL_TRANSITION_TICKET) {
         const prData: PullsUpdateParams = {
           owner,
           repo,
@@ -192,7 +200,9 @@ async function run(): Promise<void> {
         ...commonPayload,
         body: getNoIdComment(headBranch),
       };
-      await addComment(client, comment);
+      if (!WILL_TRANSITION_TICKET) {
+        await addComment(client, comment);
+      }
 
       core.setFailed('Invalid JIRA key. Please create a branch with a valid JIRA issue key.');
       process.exit(1);
