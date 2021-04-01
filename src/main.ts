@@ -96,6 +96,7 @@ async function run(): Promise<void> {
         additions: 0,
         title: '',
       };
+      console.log('Push Event', eventData);
     }
 
     const { name: repo } = repository;
