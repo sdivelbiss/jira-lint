@@ -80,6 +80,7 @@ async function run(): Promise<void> {
     let eventData = pullRequestEvent;
 
     if (eventName === 'push') {
+      console.log(github.context);
       eventData = {
         number: 0,
         // eslint-disable-next-line @typescript-eslint/camelcase
