@@ -86,10 +86,10 @@ async function run(): Promise<void> {
         html_url: repository.html_url,
         body: '',
         base: {
-          ref: github.context.ref,
+          ref: 'skip',
         },
         head: {
-          ref: '',
+          ref: github.context.ref,
         },
         // eslint-disable-next-line @typescript-eslint/camelcase
         changed_files: 0,
