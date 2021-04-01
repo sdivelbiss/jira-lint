@@ -121,7 +121,7 @@ async function run(): Promise<void> {
     // github client with given token
     const client: github.GitHub = new github.GitHub(GITHUB_TOKEN);
 
-    if (!headBranch && !baseBranch) {
+    if (!headBranch && !baseBranch && !WILL_TRANSITION_TICKET) {
       const commentBody = 'jira-lint is unable to determine the head and base branch';
       const comment: IssuesCreateCommentParams = {
         ...commonPayload,
