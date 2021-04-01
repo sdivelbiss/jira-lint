@@ -71,7 +71,7 @@ async function run(): Promise<void> {
         pull_request: pullRequest = {},
       },
     } = github.context;
-
+    console.log(github.context);
     if (typeof repository === 'undefined') {
       throw new Error(`Missing 'repository' from github action context.`);
     }
