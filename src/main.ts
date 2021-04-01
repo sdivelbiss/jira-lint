@@ -138,16 +138,17 @@ async function run(): Promise<void> {
       const typeLabel: string = details?.type?.name || '';
       const labels: string[] = [podLabel, hotfixLabel, typeLabel].filter(isNotBlank);
       console.log('Adding lables -> ', labels);
-
+      if (isIssueStatusValid(VALIDATE_ISSUE_STATUS, ALLOWED_ISSUE_STATUSES.split(','), details)) {
+        console.log('Current Ticket status:', details.status);
+        core.setOutput('status', details.status)
+      }
+      
       await addLabels(client, {
         ...commonPayload,
         labels,
       });
 
-      if (isIssueStatusValid(VALIDATE_ISSUE_STATUS, ALLOWED_ISSUE_STATUSES.split(','), details)) {
-        console.log('Current Ticket status:', details.status);
-        core.setOutput('status', details.status)
-      }
+      
 
       if (!isIssueStatusValid(VALIDATE_ISSUE_STATUS, ALLOWED_ISSUE_STATUSES.split(','), details)) {
         const invalidIssueStatusComment: IssuesCreateCommentParams = {
