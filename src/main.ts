@@ -144,7 +144,7 @@ async function run(): Promise<void> {
         labels,
       });
 
-      isIssueStatusValid(VALIDATE_ISSUE_STATUS, ALLOWED_ISSUE_STATUSES.split(','), details){
+      if (isIssueStatusValid(VALIDATE_ISSUE_STATUS, ALLOWED_ISSUE_STATUSES.split(','), details)) {
         console.log('Current Ticket status:', details.status);
         core.setOutput('status', details.status)
       }
