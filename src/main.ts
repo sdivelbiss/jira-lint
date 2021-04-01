@@ -69,8 +69,8 @@ async function run(): Promise<void> {
         repository,
         organization: { login: owner },
         pull_request: pullRequestEvent = {},
-        eventName,
       },
+      eventName,
     } = github.context;
     console.log(github.context);
     if (typeof repository === 'undefined') {
