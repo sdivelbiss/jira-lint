@@ -68,7 +68,7 @@ async function run(): Promise<void> {
       payload: {
         repository,
         organization: { login: owner },
-        pull_request: pullRequestEvent,
+        pull_request: pullRequestEvent = {},
         eventName,
       },
     } = github.context;
@@ -102,8 +102,8 @@ async function run(): Promise<void> {
     const { name: repo } = repository;
 
     const {
-      base: { ref: baseBranch },
-      head: { ref: headBranch },
+      base: { ref: baseBranch = '' } = {},
+      head: { ref: headBranch = '' } = {},
       number: prNumber = 0,
       body: prBody = '',
       additions = 0,
