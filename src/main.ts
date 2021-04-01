@@ -72,7 +72,7 @@ async function run(): Promise<void> {
       },
       eventName,
     } = github.context;
-    console.log(github.context);
+
     if (typeof repository === 'undefined') {
       throw new Error(`Missing 'repository' from github action context.`);
     }
@@ -166,7 +166,7 @@ async function run(): Promise<void> {
       const hotfixLabel: string = getHotfixLabel(baseBranch);
       const typeLabel: string = details?.type?.name || '';
       const labels: string[] = [podLabel, hotfixLabel, typeLabel].filter(isNotBlank);
-      core.setOutput('status', details);
+      core.setOutput('status', details.status);
       console.log(details);
       console.log('Adding lables -> ', labels);
 
