@@ -68,7 +68,7 @@ async function run(): Promise<void> {
       payload: {
         repository,
         organization: { login: owner },
-        pull_request: pullRequest,
+        pull_request: pullRequest = {},
       },
     } = github.context;
 
