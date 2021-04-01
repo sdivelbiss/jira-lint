@@ -68,12 +68,34 @@ async function run(): Promise<void> {
       payload: {
         repository,
         organization: { login: owner },
-        pull_request: pullRequest = {},
+        pull_request: pullRequestEvent,
+        eventName,
       },
     } = github.context;
     console.log(github.context);
     if (typeof repository === 'undefined') {
       throw new Error(`Missing 'repository' from github action context.`);
+    }
+
+    let eventData = pullRequestEvent;
+
+    if (eventName === 'push') {
+      eventData = {
+        number: 0,
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        html_url: repository.html_url,
+        body: '',
+        base: {
+          ref: github.context.ref,
+        },
+        head: {
+          ref: '',
+        },
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        changed_files: 0,
+        additions: 0,
+        title: '',
+      };
     }
 
     const { name: repo } = repository;
@@ -85,7 +107,7 @@ async function run(): Promise<void> {
       body: prBody = '',
       additions = 0,
       title = '',
-    } = pullRequest as PullRequestParams;
+    } = eventData as PullRequestParams;
 
     // common fields for both issue and comment
     const commonPayload = {
